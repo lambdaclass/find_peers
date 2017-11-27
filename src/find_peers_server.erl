@@ -51,7 +51,7 @@ discover() ->
 fresh_nodes(Nodes) ->
     Nodes0 = sets:from_list(Nodes),
     Nodes1 = sets:from_list(erlang:nodes()),
-    Nodes2 = sets:subtract(Nodes1, Nodes0),
+    Nodes2 = sets:subtract(Nodes0, Nodes1),
     sets:to_list(Nodes2).
 
 connect_nodes(Nodes) ->
