@@ -22,7 +22,6 @@
 %%====================================================================
 
 start_link() ->
-    error_logger:info_msg("[~p:~p/~p]", [?MODULE, ?FUNCTION_NAME, ?FUNCTION_ARITY]),
     Args = [],
     Options = [],
     gen_server:start_link({local, ?MODULE}, ?MODULE, Args, Options).
@@ -35,8 +34,6 @@ poll() ->
 %%====================================================================
 
 init(_Args) ->
-    error_logger:info_msg("[~p:~p/~p]", [?MODULE, ?FUNCTION_NAME, ?FUNCTION_ARITY]),
-
     Port = port(),
     Maddr = maddr(),
     Opts =
@@ -58,14 +55,12 @@ init(_Args) ->
             socket => Socket,
             conn => {Maddr, Port, Socket}
         },
-    {ok, State}.
+    {ok, State, 0}.
 
 handle_call(poll, _From, State = #{seen := Nodes}) ->
-    error_logger:info_msg("[~p:~p/~p]", [?MODULE, ?FUNCTION_NAME, ?FUNCTION_ARITY]),
-    {reply, sets:to_list(Nodes), State, 0}.
+    {reply, sets:to_list(Nodes), State}.
 
 handle_info(broadcast, State = #{conn := {Maddr, Port, Socket}}) ->
-    error_logger:info_msg("[~p:~p/~p] broadcast", [?MODULE, ?FUNCTION_NAME, ?FUNCTION_ARITY]),
     NodeBin = erlang:atom_to_binary(node(), utf8),
     Msg = <<"Peer:", NodeBin/binary>>,
     gen_udp:send(Socket, Maddr, Port, [Msg]),
@@ -74,7 +69,6 @@ handle_info(broadcast, State = #{conn := {Maddr, Port, Socket}}) ->
     {noreply, State};
 
 handle_info(timeout, State) ->
-    error_logger:info_msg("[~p:~p/~p] timeout", [?MODULE, ?FUNCTION_NAME, ?FUNCTION_ARITY]),
     handle_info(broadcast, State),
     {noreply, State};
 

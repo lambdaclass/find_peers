@@ -19,7 +19,6 @@
 %%====================================================================
 
 start_link() ->
-    error_logger:info_msg("[~p:~p/~p]", [?MODULE, ?FUNCTION_NAME, ?FUNCTION_ARITY]),
     Args = [],
     Options = [],
     gen_server:start_link(?MODULE, Args, Options).
@@ -29,16 +28,12 @@ start_link() ->
 %%====================================================================
 
 init(_Args) ->
-    error_logger:info_msg("[~p:~p/~p]", [?MODULE, ?FUNCTION_NAME, ?FUNCTION_ARITY]),
     Time = application:get_env(find_peers, sync_timeout, ?DEFAULT_SYNC_TIMEOUT),
     erlang:send_after(Time, self(), poll),
     {ok, #{}}.
 
 handle_info(poll, State) ->
-    error_logger:info_msg("[~p:~p/~p]", [?MODULE, ?FUNCTION_NAME, ?FUNCTION_ARITY]),
-
     discover(),
-
     Time = application:get_env(find_peers, sync_timeout, ?DEFAULT_SYNC_TIMEOUT),
     erlang:send_after(Time, self(), poll),
     {noreply, State}.

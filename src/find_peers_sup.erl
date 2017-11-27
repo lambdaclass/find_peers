@@ -20,7 +20,6 @@
 %%====================================================================
 
 start_link() ->
-    error_logger:info_msg("[~p:~p/~p]", [?MODULE, ?FUNCTION_NAME, ?FUNCTION_ARITY]),
     supervisor:start_link({local, ?SERVER}, ?MODULE, []).
 
 %%====================================================================
@@ -28,7 +27,6 @@ start_link() ->
 %%====================================================================
 
 init([]) ->
-    error_logger:info_msg("[~p:~p/~p]", [?MODULE, ?FUNCTION_NAME, ?FUNCTION_ARITY]),
     Children =
         [
             #{
