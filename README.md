@@ -1,2 +1,9 @@
-# find_peers
-Find other erlang peers in the same subnet
+find_peers
+=====
+
+An OTP application
+
+Build
+-----
+
+    $ rebar3 compile
